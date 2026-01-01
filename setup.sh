@@ -30,12 +30,12 @@ print_warning() {
 
 # Update system packages
 print_status "Updating system packages..."
-sudo apt-get update -y
-sudo apt-get upgrade -y
+apt-get update -y
+apt-get upgrade -y
 
 # Install system dependencies
 print_status "Installing system dependencies..."
-sudo apt-get install -y \
+apt-get install -y \
     build-essential \
     git \
     wget \
