@@ -50,16 +50,23 @@ apt-get install -y \
 
 # Install Miniconda if conda is not available
 if ! command -v conda &> /dev/null; then
-    print_status "Installing Miniconda..."
+    print_status "Installing Miniconda to /workspace..."
+    mkdir -p /workspace
     wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh -O /tmp/miniconda.sh
-    bash /tmp/miniconda.sh -b -p $HOME/miniconda3
+    bash /tmp/miniconda.sh -b -p /workspace/miniconda3
     rm /tmp/miniconda.sh
     
     # Initialize conda
-    eval "$($HOME/miniconda3/bin/conda shell.bash hook)"
+    eval "$(/workspace/miniconda3/bin/conda shell.bash hook)"
     conda init bash
     
-    print_status "Miniconda installed successfully"
+    # Accept Terms of Service and Privacy Policy
+    print_status "Accepting Conda Terms of Service and Privacy Policy..."
+    conda config --set channel_priority flexible
+    /workspace/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
+    /workspace/miniconda3/bin/conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
+    
+    print_status "Miniconda installed successfully at /workspace/miniconda3"
 else
     print_status "Conda is already installed"
     eval "$(conda shell.bash hook)"
